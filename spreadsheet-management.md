@@ -9,8 +9,8 @@ TOPページではカテゴリーや年の絞り込みは表示せず、PROJECTS
 - `slug`: ページID。URLやファイル名に使います。例: `yohaku`
 - `title`: 日本語タイトル
 - `title_en`: 英語タイトル。日本語タイトルがない作品に使います。
-- `year`: 年
-- `categories`: カテゴリー。複数ある場合はカンマ区切り。例: `writing,direction`
+- `year`: 年。PROJECTSページの年フィルターに反映されます。現状は2006年から最新年まで表示します。
+- `categories`: カテゴリー。PROJECTSページのカテゴリーフィルターに反映されます。複数ある場合はカンマ区切り。例: `Architecture,Urbanism`
 - `meta`: 一覧右側に出す短い情報
 - `summary`: 個別ページ本文
 - `image_url`: 個別ページ画像URL

@@ -11,6 +11,10 @@
 
 `SHEET_CSV_URL` が未設定のときは、手元の `works-spreadsheet-template.csv` から生成されます。
 
+`categories` 列に入れた値がPROJECTSページのカテゴリーフィルターになります。複数カテゴリは `Architecture,Urbanism` のようにカンマで区切ります。
+
+`year` 列は年フィルターに使います。現在は2006年から最新年まで表示されるようにしています。
+
 ## Netlifyの設定
 
 Netlifyでは、このリポジトリをGitHubなどに置いてから読み込みます。

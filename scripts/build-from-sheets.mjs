@@ -14,6 +14,32 @@ function escapeHtml(value = "") {
     .replaceAll('"', "&quot;");
 }
 
+function slugify(value = "") {
+  const slug = String(value)
+    .trim()
+    .toLowerCase()
+    .replaceAll("&", "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  if (slug) {
+    return slug;
+  }
+  return `cat-${Array.from(String(value).trim())
+    .map((char) => char.codePointAt(0).toString(36))
+    .join("-")}`;
+}
+
+function titleCase(value = "") {
+  if (/[A-Z]/.test(value)) {
+    return value.trim();
+  }
+  return value
+    .trim()
+    .split(/[\s_-]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 function parseCsv(text) {
   const rows = [];
   let row = [];
@@ -79,7 +105,10 @@ async function loadWorks() {
     return {
       ...item,
       title_display: item.title || item.title_en,
-      categories,
+      categories: categories.map((category) => ({
+        id: slugify(category),
+        label: titleCase(category),
+      })),
     };
   });
 }
@@ -94,14 +123,14 @@ function nav(active = "") {
       <nav class="nav" aria-label="主要ナビゲーション">
         <a${projectCurrent} href="./works.html">PROJECTS</a>
         <a${aboutCurrent} href="./about.html">ABOUT</a>
-        <a href="mailto:hello@example.com">INQUIRIES</a>
+        <a href="mailto:hello@example.com">CONTACT</a>
       </nav>
     </header>`;
 }
 
 function footer() {
   return `<footer class="footer">
-      <span>© 森純平とインテロバング</span>
+      <span>© Interrobang</span>
       <a href="./index.html">Home</a>
     </footer>`;
 }
@@ -131,7 +160,7 @@ ${body}
 
 function projectRow(work) {
   return `<a class="project-row" href="./work-${escapeHtml(work.slug)}.html" data-tags="${escapeHtml(
-    work.categories.join(" "),
+    work.categories.map((category) => category.id).join(" "),
   )}" data-year="${escapeHtml(work.year)}">
             <span class="project-name">${escapeHtml(work.title_display)}</span>
             <span class="project-meta">${escapeHtml(work.meta)}</span>
@@ -160,7 +189,7 @@ function indexPage(works) {
       <section class="selected home-works" aria-label="プロジェクト一覧">
         <div class="section-label">
           <p>Selected Projects</p>
-          <span>2019 - 2026</span>
+          <span>2006 - 2026</span>
         </div>
 
         <div class="project-list">
@@ -173,17 +202,28 @@ function indexPage(works) {
       </section>
 
       <section class="home-inquiries" aria-labelledby="home-inquiries-title">
-        <p class="page-label" id="home-inquiries-title">INQUIRIES</p>
+        <p class="page-label" id="home-inquiries-title">CONTACT</p>
         <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
       </section>`,
   });
 }
 
 function worksPage(works) {
-  const categories = [...new Set(works.flatMap((work) => work.categories))];
-  const years = [...new Set(works.map((work) => work.year))].sort((a, b) => Number(b) - Number(a));
+  const categories = [
+    ...new Map(
+      works
+        .flatMap((work) => work.categories)
+        .map((category) => [category.id, category]),
+    ).values(),
+  ];
+  const workYears = works.map((work) => Number(work.year)).filter(Boolean);
+  const maxYear = Math.max(...workYears);
+  const minYear = Math.min(2006, ...workYears);
+  const years = Array.from({ length: maxYear - minYear + 1 }, (_, index) =>
+    String(maxYear - index),
+  );
   const categoryButtons = categories
-    .map((category) => `<button class="filter-button" type="button" data-filter="${escapeHtml(category)}" aria-pressed="false">${escapeHtml(category)}</button>`)
+    .map((category) => `<button class="filter-button" type="button" data-filter="${escapeHtml(category.id)}" aria-pressed="false">${escapeHtml(category.label)}</button>`)
     .join("\n            ");
   const yearButtons = years
     .map((year) => `<button class="filter-button" type="button" data-year="${escapeHtml(year)}" aria-pressed="false">${escapeHtml(year)}</button>`)
@@ -200,11 +240,6 @@ function worksPage(works) {
       </section>
 
       <section class="selected" aria-label="プロジェクト一覧">
-        <div class="section-label">
-          <p>Selected Projects</p>
-          <span>2019 - 2026</span>
-        </div>
-
         <div class="filters" aria-label="作品フィルター">
           <div class="filter-group" aria-label="カテゴリー">
             <span>Category</span>
@@ -269,7 +304,7 @@ function workPage(work) {
       </section>
 
       <article class="work-detail">
-        <aside class="work-meta">${escapeHtml(work.categories.join(" / "))}</aside>
+        <aside class="work-meta">${escapeHtml(work.categories.map((category) => category.label).join(" / "))}</aside>
         <div class="work-body">
           <p>${escapeHtml(work.summary)}</p>
           <figure class="work-image">

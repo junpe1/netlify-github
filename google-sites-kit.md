@@ -16,7 +16,7 @@ Google Sites では、以下のページを作ります。
 - まちの句読点
 - Table of Small Questions
 
-ナビゲーションには `PROJECTS`、`ABOUT`、`INQUIRIES` を表示します。`PROJECTS` と `ABOUT` はそれぞれ個別ページへリンクし、`INQUIRIES` はメールリンクにします。
+ナビゲーションには `PROJECTS`、`ABOUT`、`CONTACT` を表示します。`PROJECTS` と `ABOUT` はそれぞれ個別ページへリンクし、`CONTACT` はメールリンクにします。
 
 ## 2. テーマ設定
 
@@ -63,7 +63,7 @@ PROJECTS
 
 Selected Projects
 
-Selected Projects                         2019 - 2026
+Selected Projects                         2006 - 2026
 
 余白の研究室                              Editorial Direction / 2026
 Civic Question Archive                    Planning / Writing / 2025
