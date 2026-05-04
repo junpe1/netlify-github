@@ -7,7 +7,7 @@ const LOCAL_CSV = path.join(ROOT, "works-spreadsheet-template.csv");
 const LOCAL_ABOUT_CSV = path.join(ROOT, "about-content-template.csv");
 const SHEET_CSV_URL = process.env.SHEET_CSV_URL;
 const ABOUT_CSV_URL = process.env.ABOUT_CSV_URL;
-const ASSET_VERSION = "20260504-sheet-featured-v2";
+const ASSET_VERSION = "20260504-orange-scoped-v3";
 
 function escapeHtml(value = "") {
   return String(value)
@@ -163,9 +163,21 @@ function nav(active = "") {
   const projectCurrent = active === "projects" ? ' aria-current="page"' : "";
   const aboutCurrent = active === "about" ? ' aria-current="page"' : "";
   const interrobangCurrent = active === "interrobang" ? ' aria-current="page"' : "";
+  const brandText = active === "interrobang" ? "INTERROBANG" : "JUNPEI MORI / INTERROBANG";
+  const brandHref = active === "interrobang" ? "./interrobang.html" : "./index.html";
+  const navLinks =
+    active === "interrobang"
+      ? `<a href="./works.html">PROJECTS</a>
+        <a href="./about.html">JUNPEI MORI</a>
+        <a href="#ritsuko-mori">RITSUKO MORI</a>
+        <a href="mailto:hello@example.com">CONTACT</a>`
+      : `<a${projectCurrent} href="./works.html">PROJECTS</a>
+        <a${aboutCurrent} href="./about.html">ABOUT</a>
+        <a${interrobangCurrent} href="./interrobang.html">INTERROBANG</a>
+        <a href="mailto:hello@example.com">CONTACT</a>`;
   return `<header class="site-header" aria-label="サイトヘッダー">
-      <a class="brand" href="./index.html" aria-label="森純平とインテロバング">
-        <span>JUNPEI MORI / INTERROBANG</span>
+      <a class="brand" href="${brandHref}" aria-label="森純平とインテロバング">
+        <span>${brandText}</span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="menu-toggle-text">Menu</span>
@@ -173,10 +185,7 @@ function nav(active = "") {
         <span class="menu-line" aria-hidden="true"></span>
       </button>
       <nav class="nav" id="site-nav" aria-label="主要ナビゲーション">
-        <a${projectCurrent} href="./works.html">PROJECTS</a>
-        <a${aboutCurrent} href="./about.html">ABOUT</a>
-        <a${interrobangCurrent} href="./interrobang.html">INTERROBANG</a>
-        <a href="mailto:hello@example.com">CONTACT</a>
+        ${navLinks}
       </nav>
     </header>`;
 }
@@ -184,7 +193,7 @@ function nav(active = "") {
 function footer() {
   return `<footer class="footer">
       <span>© Interrobang</span>
-      <a href="./index.html">Home</a>
+      <span class="footer-links"><a href="./index.html">Home</a><a href="mailto:hello@example.com">Contact</a></span>
     </footer>`;
 }
 
@@ -215,6 +224,7 @@ function contactSection() {
 }
 
 function shell({ title, description, active, body }) {
+  const bodyClass = active === "interrobang" ? ' class="interrobang-theme"' : "";
   return `<!doctype html>
 <html lang="ja">
   <head>
@@ -224,7 +234,7 @@ function shell({ title, description, active, body }) {
     <meta name="description" content="${escapeHtml(description)}">
     <link rel="stylesheet" href="./styles.css?v=${ASSET_VERSION}">
   </head>
-  <body>
+  <body${bodyClass}>
     ${nav(active)}
 
     <main>
@@ -410,13 +420,11 @@ function interrobangPage() {
     description: "株式会社インテロバングについて。",
     active: "interrobang",
     body: `      <section class="page-head compact-head" aria-labelledby="interrobang-title">
-        <p class="page-label">INTERROBANG</p>
         <h1 id="interrobang-title">INTERROBANG / インテロバング</h1>
       </section>
 
       <section class="text-page interrobang-page">
         <article class="text-block">
-          <p class="kicker">ABOUT</p>
           <p>‽(インテロバング、感嘆修辞疑問符）は、英語などの表記に使われる記号で、疑問符「?」と感嘆符「!」を縦に重ね合わせたもので、疑問と感嘆を同時に表現します。</p>
           <p>株式会社インテロバングは、日常の空間に提案を行い、驚きと感動を与えることを目指しています。まちや広場、建物など日常空間の在り方を思考し、建築家・美術家・写真家・音楽家・エンジニアなど、化学反応を起こしそうな仲間と共に、あるべき未来を提案しています‽</p>
         </article>
@@ -430,11 +438,6 @@ function interrobangPage() {
             <div><dt>Local Identity</dt><dd>地域や文化の特色を活かし、それぞれの場所に根ざした空間デザインを提案すること。</dd></div>
             <div><dt>Wonder and Emotion</dt><dd>日常空間に驚きと感動をもたらすデザインで、人々の暮らしを豊かにすることを目指す。</dd></div>
           </dl>
-        </article>
-
-        <article class="text-block">
-          <p class="kicker">NEWS</p>
-          <p><a class="text-link" href="https://www.notion.so/17103ec3c8ac8195ad73d42e84b1b9cd?pvs=21">NEWS</a></p>
         </article>
 
         <article class="text-block">
@@ -467,12 +470,12 @@ function interrobangPage() {
         <article class="text-block">
           <p class="kicker">MEMBER</p>
           <div class="member-list">
-            <section>
+            <section id="junpei-mori">
               <h2>森 純平 / Junpei Mori</h2>
               <p>Architect / Consultant / Educator / 空間デザイン / 建築設計 / 企画コンサルティング / マネジメント / ブランドディレクション / Director of PARADISE AIR / Co-director of VIVA.</p>
               <p><a class="text-link" href="https://linktr.ee/junpe1">Linktree</a></p>
             </section>
-            <section>
+            <section id="ritsuko-mori">
               <h2>森 律子 / Ritsuko Mori</h2>
               <p>Architect / Acoustic designer / Interior and Furniture designer / 音響設計 / 音環境コンサルテング / 内装設計 / 家具デザイン / Interior and acoustic designer of SONA Co.</p>
               <p>東京藝術大学 音楽学部 音楽環境創造科、早稲田大学芸術学校 建築科、東京藝術大学大学院 音楽音響創造を経て、株式会社ソナで音響設計・意匠設計の両面からスタジオデザインに従事。2019年、株式会社インテロバング設立。</p>
