@@ -55,28 +55,34 @@
 
         <div class="project-list">
           <a class="project-row" href="./work-yohaku.html" data-tags="writing direction" data-year="2026">
+            
             <span class="project-name">余白の研究室</span>
-            <span class="project-meta">Editorial Direction / 2026</span>
+            <span class="project-meta">2026</span>
           </a>
           <a class="project-row" href="./work-civic.html" data-tags="writing direction community" data-year="2025">
+            
             <span class="project-name">Civic Question Archive</span>
-            <span class="project-meta">Planning / Writing / 2025</span>
+            <span class="project-meta">2025</span>
           </a>
           <a class="project-row" href="./work-museum.html" data-tags="writing exhibition" data-year="2025">
+            
             <span class="project-name">夜のためのミュージアム</span>
-            <span class="project-meta">Copy / Exhibition Text / 2025</span>
+            <span class="project-meta">2025</span>
           </a>
           <a class="project-row" href="./work-papers.html" data-tags="publishing writing" data-year="2024">
+            
             <span class="project-name">Interrobang Papers</span>
-            <span class="project-meta">Publishing / Identity / 2024</span>
+            <span class="project-meta">2024</span>
           </a>
           <a class="project-row" href="./work-city.html" data-tags="community direction" data-year="2023">
+            
             <span class="project-name">まちの句読点</span>
-            <span class="project-meta">Community Editing / 2023</span>
+            <span class="project-meta">2023</span>
           </a>
           <a class="project-row" href="./work-table.html" data-tags="workshop writing" data-year="2022">
+            
             <span class="project-name">Table of Small Questions</span>
-            <span class="project-meta">Workshop / Research / 2022</span>
+            <span class="project-meta">2022</span>
           </a>
         </div>
       </section>
@@ -97,7 +103,8 @@
           const tags = row.dataset.tags.split(" ");
           const tagMatch = active.tag === "all" || tags.includes(active.tag);
           const yearMatch = active.year === "all" || row.dataset.year === active.year;
-          row.hidden = !(tagMatch && yearMatch);
+          const dimmed = !(tagMatch && yearMatch);
+          row.classList.toggle("is-dimmed", dimmed);
         });
       }
 

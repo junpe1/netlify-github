@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>森純平とインテロバング</title>
-    <meta
-      name="description"
-      content="森純平とインテロバングの活動、プロジェクト、制作姿勢を紹介するサイト。"
-    >
+    <meta name="description" content="森純平とインテロバングの活動、プロジェクト、制作姿勢を紹介するサイト。">
     <link rel="stylesheet" href="./styles.css?v=20260504-mobile-nav">
   </head>
   <body>
@@ -29,18 +26,11 @@
 
     <main>
       <section class="home" aria-labelledby="home-title">
-        <p class="page-label">ABOUT</p>
-        <h1 id="home-title">Architect /</h1>
+        <h1 class="visually-hidden" id="home-title">Jumpei Mori</h1>
         <div class="home-copy">
-          <p>
-            Jumpei Mori is an architect and Project Associate Professor at Tokyo University of the Arts, where he also serves as Director of The Way Of.
-          </p>
-          <p>
-            His work centers on connecting art, society, and the city by designing new social ecosystems and connections. He is a founding director of PARADISE AIR and leads key cultural platforms such as VIVA and YAU.
-          </p>
-          <p>
-            In 2026, he established the GEIDAI NY DESK in New York, the university's first overseas base. Mori's practice extends beyond buildings to the design of invisible structures, including institutional systems and community networks.
-          </p>
+          <p>Jumpei Mori is an architect and Project Associate Professor at Tokyo University of the Arts, where he also serves as Director of The Way Of.</p>
+          <p>His work centers on connecting art, society, and the city by designing new social ecosystems and connections. He is a founding director of PARADISE AIR and leads key cultural platforms such as VIVA and YAU.</p>
+          <p>In 2026, he established the GEIDAI NY DESK in New York, the university's first overseas base. Mori's practice extends beyond buildings to the design of invisible structures, including institutional systems and community networks.</p>
         </div>
         <div class="home-links">
           <a class="text-link" href="./about.html">Learn More</a>
@@ -54,17 +44,20 @@
         </div>
 
         <div class="project-list">
-          <a class="project-row" href="./work-yohaku.html">
+          <a class="project-row project-row-with-image" href="./work-yohaku.html" data-tags="writing direction" data-year="2026">
+            <span class="project-thumb"><img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt=""></span>
             <span class="project-name">余白の研究室</span>
-            <span class="project-meta">Editorial Direction / 2026</span>
+            <span class="project-meta">2026</span>
           </a>
-          <a class="project-row" href="./work-civic.html">
+          <a class="project-row project-row-with-image" href="./work-civic.html" data-tags="writing direction community" data-year="2025">
+            <span class="project-thumb"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&amp;fit=crop&amp;w=1600&amp;q=80" alt=""></span>
             <span class="project-name">Civic Question Archive</span>
-            <span class="project-meta">Planning / Writing / 2025</span>
+            <span class="project-meta">2025</span>
           </a>
-          <a class="project-row" href="./work-museum.html">
+          <a class="project-row project-row-with-image" href="./work-museum.html" data-tags="writing exhibition" data-year="2025">
+            <span class="project-thumb"><img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&amp;fit=crop&amp;w=1600&amp;q=82" alt=""></span>
             <span class="project-name">夜のためのミュージアム</span>
-            <span class="project-meta">Copy / Exhibition Text / 2025</span>
+            <span class="project-meta">2025</span>
           </a>
           <a class="project-row" href="./works.html">
             <span class="project-name">All Projects</span>
@@ -73,9 +66,28 @@
         </div>
       </section>
 
-      <section class="home-inquiries" aria-labelledby="home-inquiries-title">
-        <p class="page-label" id="home-inquiries-title">CONTACT</p>
-        <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
+      <section class="contact contact-form-section" aria-labelledby="contact-title">
+        <p class="kicker">CONTACT</p>
+        <form class="contact-form" name="contact" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="contact">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name">
+          </label>
+          <label>
+            <span>Mail</span>
+            <input type="email" name="email" autocomplete="email">
+          </label>
+          <label>
+            <span>Subject</span>
+            <input type="text" name="subject">
+          </label>
+          <label class="message-field">
+            <span>Message</span>
+            <textarea name="message" rows="5"></textarea>
+          </label>
+          <button type="submit">Send</button>
+        </form>
       </section>
     </main>
 

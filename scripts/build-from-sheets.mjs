@@ -4,7 +4,9 @@ import path from "node:path";
 const ROOT = process.cwd();
 const PUBLIC_DIR = path.join(ROOT, "public");
 const LOCAL_CSV = path.join(ROOT, "works-spreadsheet-template.csv");
+const LOCAL_ABOUT_CSV = path.join(ROOT, "about-content-template.csv");
 const SHEET_CSV_URL = process.env.SHEET_CSV_URL;
+const ABOUT_CSV_URL = process.env.ABOUT_CSV_URL;
 const ASSET_VERSION = "20260504-mobile-nav";
 
 function escapeHtml(value = "") {
@@ -114,6 +116,25 @@ async function loadWorks() {
       };
     })
     .filter((item) => item.slug && item.title_display && item.year);
+}
+
+async function loadAbout() {
+  const csv = ABOUT_CSV_URL
+    ? await fetch(ABOUT_CSV_URL).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Could not fetch About CSV: ${response.status}`);
+        }
+        return response.text();
+      })
+    : await fs.readFile(LOCAL_ABOUT_CSV, "utf8");
+
+  const [headers, ...rows] = parseCsv(csv);
+  return Object.fromEntries(
+    rows.map((row) => {
+      const item = Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ""]));
+      return [item.key, item.value];
+    }),
+  );
 }
 
 function nav(active = "") {
@@ -330,6 +351,33 @@ function worksPage(works) {
   );
 }
 
+function aboutPage(about) {
+  return shell({
+    title: "About - 森純平とインテロバング",
+    description: "森純平とインテロバングについて。",
+    active: "about",
+    body: `      <section class="about about-page" aria-label="プロフィール">
+        <div class="about-body">
+          <div class="bio-section">
+            <p>${escapeHtml(about.ja_p1)}</p>
+            <p>${escapeHtml(about.ja_p2)}</p>
+            <p>${escapeHtml(about.ja_p3)}</p>
+          </div>
+
+          <div class="bio-section">
+            <p class="bio-title">${escapeHtml(about.en_name)}</p>
+            <p class="bio-role">${escapeHtml(about.en_role)}</p>
+            <p>${escapeHtml(about.en_p1)}</p>
+            <p>${escapeHtml(about.en_p2)}</p>
+            <p>${escapeHtml(about.en_p3)}</p>
+          </div>
+        </div>
+      </section>
+
+      ${contactSection()}`,
+  });
+}
+
 function workPage(work) {
   return shell({
     title: `${work.title_display} - 森純平とインテロバング`,
@@ -362,15 +410,16 @@ async function copyFile(name) {
 }
 
 const works = await loadWorks();
+const about = await loadAbout();
 await fs.rm(PUBLIC_DIR, { recursive: true, force: true });
 await fs.mkdir(PUBLIC_DIR, { recursive: true });
 
 await copyFile("styles.css");
 await copyFile("menu.js");
 await copyFile("_headers");
-await copyFile("about.html");
 await writeFile("index.html", indexPage(works));
 await writeFile("works.html", worksPage(works));
+await writeFile("about.html", aboutPage(about));
 
 for (const work of works) {
   await writeFile(`work-${work.slug}.html`, workPage(work));

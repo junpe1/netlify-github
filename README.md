@@ -15,6 +15,8 @@
 
 `year` 列は年フィルターに使います。作品ページが生成される行の年だけがPROJECTSページに表示されます。
 
+ABOUT本文もGoogle Sheetsで管理できます。別タブに `about-content-template.csv` と同じ `key,value` 形式を作り、そのタブの公開CSV URLをNetlifyの環境変数 `ABOUT_CSV_URL` に入れてください。未設定の場合は手元の `about-content-template.csv` から生成されます。
+
 ## Netlifyの設定
 
 Netlifyでは、このリポジトリをGitHubなどに置いてから読み込みます。
@@ -22,6 +24,7 @@ Netlifyでは、このリポジトリをGitHubなどに置いてから読み込�
 - Build command: `node scripts/build-from-sheets.mjs`
 - Publish directory: `public`
 - Environment variable: `SHEET_CSV_URL`
+- Optional environment variable: `ABOUT_CSV_URL`
 
 `netlify.toml` にも同じ設定を書いてあります。
 

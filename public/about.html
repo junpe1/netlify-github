@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>About - 森純平とインテロバング</title>
-    <meta
-      name="description"
-      content="森純平とインテロバングについて。"
-    >
+    <meta name="description" content="森純平とインテロバングについて。">
     <link rel="stylesheet" href="./styles.css?v=20260504-mobile-nav">
   </head>
   <body>
@@ -28,48 +25,46 @@
     </header>
 
     <main>
-      <section class="page-head about-head" aria-labelledby="about-title">
-        <p class="page-label">ABOUT</p>
-        <h1 id="about-title">Jumpei Mori</h1>
-      </section>
-
       <section class="about about-page" aria-label="プロフィール">
         <div class="about-body">
           <div class="bio-section">
-            <p class="bio-title">建築家 /</p>
-            <p>
-              1985年マレーシア生まれ。東京藝術大学大学院美術研究科（建築専攻）修了。アート、社会、都市を接続する新たな「仕組み」や「回路」の設計を軸に、既存の境界を越境する多角的なプロジェクトを牽引している。
-            </p>
-            <p>
-              2013年より千葉県松戸市のアーティスト・イン・レジデンス PARADISE AIR の設立に携わり、ディレクターを務める。また、2024年より東京藝術大学では特任准教授として、アートの社会実装における手法を体系化するプロジェクト The Way Of のディレクターに就任。取手駅ビルのワンフロアを丸ごと活用したラーニング拠点 VIVA や、有楽町のアートアーバニズム拠点 YAU のディレクションなど、都市の日常の中にアーティストが介在する状況を建築的な視点から構築している。
-            </p>
-            <p>
-              2026年3月には、東京藝術大学初の海外拠点となる GEIDAI NY DESK（米国ニューヨーク）を立ち上げた。建築設計の枠を超え、制度やコミュニティといった不可視の構造をデザインすることで、社会における文化の新たなあり方を実践している。
-            </p>
+            <p>1985年マレーシア生まれ。東京藝術大学大学院美術研究科（建築専攻）修了。アート、社会、都市を接続する新たな「仕組み」や「回路」の設計を軸に、既存の境界を越境する多角的なプロジェクトを牽引している。</p>
+            <p>2013年より千葉県松戸市のアーティスト・イン・レジデンス PARADISE AIR の設立に携わり、ディレクターを務める。また、2024年より東京藝術大学では特任准教授として、アートの社会実装における手法を体系化するプロジェクト The Way Of のディレクターに就任。取手駅ビルのワンフロアを丸ごと活用したラーニング拠点 VIVA や、有楽町のアートアーバニズム拠点 YAU のディレクションなど、都市の日常の中にアーティストが介在する状況を建築的な視点から構築している。</p>
+            <p>2026年3月には、東京藝術大学初の海外拠点となる GEIDAI NY DESK（米国ニューヨーク）を立ち上げた。建築設計の枠を超え、制度やコミュニティといった不可視の構造をデザインすることで、社会における文化の新たなあり方を実践している。</p>
           </div>
 
           <div class="bio-section">
             <p class="bio-title">Jumpei Mori</p>
             <p class="bio-role">Architect / Specially Appointed Associate Professor, Tokyo University of the Arts</p>
-            <p>
-              Born in Malaysia in 1985. Completed his Master's degree at the Graduate School of Fine Arts (Architecture), Tokyo University of the Arts. Jumpei focuses on designing new ecosystems and connectivity that link art, society, and the city, leading diverse, cross-disciplinary projects that transcend traditional boundaries.
-            </p>
-            <p>
-              Since 2013, he has been a founding director of the artist-in-residence program PARADISE AIR in Matsudo, Chiba. Since 2024, as a Specially Appointed Associate Professor at Tokyo University of the Arts, he has served as Director of The Way Of, a project dedicated to systematizing methodologies for the social implementation of art.
-            </p>
-            <p>
-              From an architectural perspective, he constructs environments where artists intervene in daily urban life, including directing VIVA, an art center and learning hub occupying an entire floor of the Toride Station building, and YAU (Yurakucho Art Urbanism). In March 2026, he launched the GEIDAI NY DESK in New York City, the first overseas base of Tokyo University of the Arts. Beyond traditional architectural design, he practices new ways for culture to exist within society by designing invisible structures such as institutional systems and community frameworks.
-            </p>
+            <p>Born in Malaysia in 1985. Completed his Master's degree at the Graduate School of Fine Arts (Architecture), Tokyo University of the Arts. Jumpei focuses on designing new ecosystems and connectivity that link art, society, and the city, leading diverse, cross-disciplinary projects that transcend traditional boundaries.</p>
+            <p>Since 2013, he has been a founding director of the artist-in-residence program PARADISE AIR in Matsudo, Chiba. Since 2024, as a Specially Appointed Associate Professor at Tokyo University of the Arts, he has served as Director of The Way Of, a project dedicated to systematizing methodologies for the social implementation of art.</p>
+            <p>From an architectural perspective, he constructs environments where artists intervene in daily urban life, including directing VIVA, an art center and learning hub occupying an entire floor of the Toride Station building, and YAU (Yurakucho Art Urbanism). In March 2026, he launched the GEIDAI NY DESK in New York City, the first overseas base of Tokyo University of the Arts. Beyond traditional architectural design, he practices new ways for culture to exist within society by designing invisible structures such as institutional systems and community frameworks.</p>
           </div>
         </div>
       </section>
 
-      <section class="contact" aria-labelledby="contact-title">
+      <section class="contact contact-form-section" aria-labelledby="contact-title">
         <p class="kicker">CONTACT</p>
-        <div>
-          <h2 id="contact-title">新しい問いを、聞かせてください。</h2>
-          <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
-        </div>
+        <form class="contact-form" name="contact" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="contact">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name">
+          </label>
+          <label>
+            <span>Mail</span>
+            <input type="email" name="email" autocomplete="email">
+          </label>
+          <label>
+            <span>Subject</span>
+            <input type="text" name="subject">
+          </label>
+          <label class="message-field">
+            <span>Message</span>
+            <textarea name="message" rows="5"></textarea>
+          </label>
+          <button type="submit">Send</button>
+        </form>
       </section>
     </main>
 
