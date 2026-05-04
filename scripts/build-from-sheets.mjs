@@ -5,6 +5,7 @@ const ROOT = process.cwd();
 const PUBLIC_DIR = path.join(ROOT, "public");
 const LOCAL_CSV = path.join(ROOT, "works-spreadsheet-template.csv");
 const SHEET_CSV_URL = process.env.SHEET_CSV_URL;
+const ASSET_VERSION = "20260504-mobile-nav";
 
 function escapeHtml(value = "") {
   return String(value)
@@ -150,7 +151,7 @@ function shell({ title, description, active, body }) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeHtml(description)}">
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css?v=${ASSET_VERSION}">
   </head>
   <body>
     ${nav(active)}
@@ -160,7 +161,7 @@ ${body}
     </main>
 
     ${footer()}
-    <script src="./menu.js"></script>
+    <script src="./menu.js?v=${ASSET_VERSION}"></script>
   </body>
 </html>
 `;
@@ -335,6 +336,7 @@ await fs.mkdir(PUBLIC_DIR, { recursive: true });
 
 await copyFile("styles.css");
 await copyFile("menu.js");
+await copyFile("_headers");
 await copyFile("about.html");
 await writeFile("index.html", indexPage(works));
 await writeFile("works.html", worksPage(works));
