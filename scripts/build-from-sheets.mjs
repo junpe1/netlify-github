@@ -96,21 +96,23 @@ async function loadWorks() {
     : await fs.readFile(LOCAL_CSV, "utf8");
 
   const [headers, ...rows] = parseCsv(csv);
-  return rows.map((row) => {
-    const item = Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ""]));
-    const categories = item.categories
-      .split(",")
-      .map((category) => category.trim())
-      .filter(Boolean);
-    return {
-      ...item,
-      title_display: item.title || item.title_en,
-      categories: categories.map((category) => ({
-        id: slugify(category),
-        label: titleCase(category),
-      })),
-    };
-  });
+  return rows
+    .map((row) => {
+      const item = Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ""]));
+      const categories = item.categories
+        .split(",")
+        .map((category) => category.trim())
+        .filter(Boolean);
+      return {
+        ...item,
+        title_display: item.title || item.title_en,
+        categories: categories.map((category) => ({
+          id: slugify(category),
+          label: titleCase(category),
+        })),
+      };
+    })
+    .filter((item) => item.slug && item.title_display && item.year);
 }
 
 function nav(active = "") {
@@ -216,11 +218,8 @@ function worksPage(works) {
         .map((category) => [category.id, category]),
     ).values(),
   ];
-  const workYears = works.map((work) => Number(work.year)).filter(Boolean);
-  const maxYear = Math.max(...workYears);
-  const minYear = Math.min(2006, ...workYears);
-  const years = Array.from({ length: maxYear - minYear + 1 }, (_, index) =>
-    String(maxYear - index),
+  const years = [...new Set(works.map((work) => work.year))].sort(
+    (a, b) => Number(b) - Number(a),
   );
   const categoryButtons = categories
     .map((category) => `<button class="filter-button" type="button" data-filter="${escapeHtml(category.id)}" aria-pressed="false">${escapeHtml(category.label)}</button>`)
