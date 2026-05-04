@@ -170,6 +170,7 @@ function nav(active = "") {
       ? `<a href="./works.html">PROJECTS</a>
         <a href="./about.html">JUNPEI MORI</a>
         <a href="#ritsuko-mori">RITSUKO MORI</a>
+        <a href="https://interrobang.base.shop/items/80056954" target="_blank" rel="noopener">BOOK</a>
         <a href="mailto:hello@example.com">CONTACT</a>`
       : `<a${projectCurrent} href="./works.html">PROJECTS</a>
         <a${aboutCurrent} href="./about.html">ABOUT</a>
