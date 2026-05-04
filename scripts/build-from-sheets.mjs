@@ -122,7 +122,12 @@ function nav(active = "") {
       <a class="brand" href="./index.html" aria-label="森純平とインテロバング">
         <span>JUNPEI MORI / INTERROBANG</span>
       </a>
-      <nav class="nav" aria-label="主要ナビゲーション">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-toggle-text">Menu</span>
+        <span class="menu-line" aria-hidden="true"></span>
+        <span class="menu-line" aria-hidden="true"></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="主要ナビゲーション">
         <a${projectCurrent} href="./works.html">PROJECTS</a>
         <a${aboutCurrent} href="./about.html">ABOUT</a>
         <a href="mailto:hello@example.com">CONTACT</a>
@@ -155,6 +160,7 @@ ${body}
     </main>
 
     ${footer()}
+    <script src="./menu.js"></script>
   </body>
 </html>
 `;
@@ -328,6 +334,7 @@ await fs.rm(PUBLIC_DIR, { recursive: true, force: true });
 await fs.mkdir(PUBLIC_DIR, { recursive: true });
 
 await copyFile("styles.css");
+await copyFile("menu.js");
 await copyFile("about.html");
 await writeFile("index.html", indexPage(works));
 await writeFile("works.html", worksPage(works));
