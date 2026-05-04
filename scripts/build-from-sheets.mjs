@@ -437,6 +437,17 @@ function interrobangPage() {
         </article>
 
         <article class="text-block">
+          <p class="kicker">COMPANY</p>
+          <dl class="company-list">
+            <div><dt>商号</dt><dd>株式会社インテロバング</dd></div>
+            <div><dt>設立</dt><dd>2019年12月23日</dd></div>
+            <div><dt>事業内容</dt><dd>建築、音、アートに関わる企画・設計・コンサルティング</dd></div>
+            <div><dt>主要取引先</dt><dd>株式会社アトレ / 京成電鉄株式会社 / コンバースジャパン株式会社 / 小諸市 / 株式会社電通 / 東京藝術大学 / 八戸市 / 松戸市 / 三菱地所株式会社</dd></div>
+            <div><dt>主な受賞歴</dt><dd>JIA日本建築大賞（八戸市美術館）2023 / AACA賞2023優秀賞（八戸市美術館）2023 / グッド・デザイン・ベスト100, 2022（八戸市美術館） / 第43回東北建築賞 作品賞（八戸市美術館）2022 / 第14回ふるさとあおもり景観賞最優秀賞 公共施設部門（八戸市美術館）2018 / 松戸市教育文化功労賞(PARADISE AIR)2016 / 松戸景観優秀賞(やしま商店)2016</dd></div>
+          </dl>
+        </article>
+
+        <article class="text-block">
           <p class="kicker">OUR PROJECTS</p>
           <div class="chronology">
             <p><span>2025</span>YAU CENTER ゼニガメ 設計（市原昇と共同） / YAU STUDIO(銀座INZ) / Future Vision Summit 会場構成監修（小泉立と共同） / 恋はみずいろ(作・演出：菅原直樹)</p>
@@ -450,17 +461,6 @@ function interrobangPage() {
             <p><span>2017</span>森の音楽祭 企画/運営</p>
             <p><span>2021</span>森の音楽集 編纂</p>
           </div>
-        </article>
-
-        <article class="text-block">
-          <p class="kicker">COMPANY</p>
-          <dl class="company-list">
-            <div><dt>商号</dt><dd>株式会社インテロバング</dd></div>
-            <div><dt>設立</dt><dd>2019年12月23日</dd></div>
-            <div><dt>事業内容</dt><dd>建築、音、アートに関わる企画・設計・コンサルティング</dd></div>
-            <div><dt>主要取引先</dt><dd>株式会社アトレ / 京成電鉄株式会社 / コンバースジャパン株式会社 / 小諸市 / 株式会社電通 / 東京藝術大学 / 八戸市 / 松戸市 / 三菱地所株式会社</dd></div>
-            <div><dt>主な受賞歴</dt><dd>JIA日本建築大賞（八戸市美術館）2023 / AACA賞2023優秀賞（八戸市美術館）2023 / グッド・デザイン・ベスト100, 2022（八戸市美術館） / 第43回東北建築賞 作品賞（八戸市美術館）2022 / 第14回ふるさとあおもり景観賞最優秀賞 公共施設部門（八戸市美術館）2018 / 松戸市教育文化功労賞(PARADISE AIR)2016 / 松戸景観優秀賞(やしま商店)2016</dd></div>
-          </dl>
         </article>
 
         <article class="text-block">
