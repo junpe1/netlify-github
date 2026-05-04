@@ -7,7 +7,7 @@ const LOCAL_CSV = path.join(ROOT, "works-spreadsheet-template.csv");
 const LOCAL_ABOUT_CSV = path.join(ROOT, "about-content-template.csv");
 const SHEET_CSV_URL = process.env.SHEET_CSV_URL;
 const ABOUT_CSV_URL = process.env.ABOUT_CSV_URL;
-const ASSET_VERSION = "20260504-orange-scoped-v3";
+const ASSET_VERSION = "20260505-home-images-about-clean-v1";
 
 function escapeHtml(value = "") {
   return String(value)
@@ -395,8 +395,6 @@ function aboutPage(about) {
     body: `      <section class="about about-page" aria-label="プロフィール">
         <div class="about-body">
           <div class="bio-section">
-            <p class="bio-title">${escapeHtml(about.en_name)}</p>
-            <p class="bio-role">${escapeHtml(about.en_role)}</p>
             <p>${escapeHtml(about.en_p1)}</p>
             <p>${escapeHtml(about.en_p2)}</p>
             <p>${escapeHtml(about.en_p3)}</p>
@@ -408,9 +406,7 @@ function aboutPage(about) {
             <p>${escapeHtml(about.ja_p3)}</p>
           </div>
         </div>
-      </section>
-
-      ${contactSection()}`,
+      </section>`,
   });
 }
 

@@ -314,9 +314,9 @@ main {
 }
 
 .home-works .project-row-with-image {
-  grid-template-columns: clamp(116px, 24vw, 210px) minmax(0, 1fr) max-content;
-  min-height: clamp(82px, 15vw, 132px);
-  gap: 26px;
+  grid-template-columns: minmax(160px, 38.2%) minmax(0, 1fr) max-content;
+  min-height: 0;
+  gap: clamp(18px, 3vw, 36px);
   padding-top: 0;
   padding-bottom: 0;
   padding-left: 0;
@@ -330,6 +330,7 @@ main {
 .home-works .project-thumb {
   align-self: stretch;
   width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .project-thumb img {
@@ -340,7 +341,7 @@ main {
 
 .home-works .project-thumb img {
   height: 100%;
-  aspect-ratio: auto;
+  aspect-ratio: 1 / 1;
 }
 
 .project-row:last-child {
@@ -518,12 +519,6 @@ main {
   margin: 0 0 14px;
   font-size: 12px;
   line-height: 1.85;
-}
-
-.bio-title,
-.bio-role {
-  color: var(--blue);
-  font-weight: 600;
 }
 
 .text-page {
@@ -967,9 +962,9 @@ main {
   }
 
   .home-works .project-row-with-image {
-    grid-template-columns: 112px minmax(0, 1fr) max-content;
-    min-height: 82px;
-    gap: 14px;
+    grid-template-columns: minmax(132px, 46vw) minmax(0, 1fr) max-content;
+    min-height: 0;
+    gap: 12px;
     padding-right: 22px;
   }
 
