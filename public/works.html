@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Projects - 森純平とインテロバング</title>
     <meta name="description" content="森純平とインテロバングのプロジェクト一覧。">
-    <link rel="stylesheet" href="./styles.css?v=20260504-mobile-nav">
+    <link rel="stylesheet" href="./styles.css?v=20260504-sheet-featured-v2">
   </head>
   <body>
     <header class="site-header" aria-label="サイトヘッダー">
@@ -20,6 +20,7 @@
       <nav class="nav" id="site-nav" aria-label="主要ナビゲーション">
         <a aria-current="page" href="./works.html">PROJECTS</a>
         <a href="./about.html">ABOUT</a>
+        <a href="./interrobang.html">INTERROBANG</a>
         <a href="mailto:hello@example.com">CONTACT</a>
       </nav>
     </header>
@@ -33,7 +34,7 @@
       <section class="selected" aria-label="プロジェクト一覧">
         <div class="filters" aria-label="作品フィルター">
           <div class="filter-group" aria-label="カテゴリー">
-            <span>Category</span>
+            <span>Category /</span>
             <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All</button>
             <button class="filter-button" type="button" data-filter="writing" aria-pressed="false">Writing</button>
             <button class="filter-button" type="button" data-filter="direction" aria-pressed="false">Direction</button>
@@ -43,7 +44,7 @@
             <button class="filter-button" type="button" data-filter="workshop" aria-pressed="false">Workshop</button>
           </div>
           <div class="filter-group" aria-label="年">
-            <span>Year</span>
+            <span>Year /</span>
             <button class="filter-button is-active" type="button" data-year="all" aria-pressed="true">All</button>
             <button class="filter-button" type="button" data-year="2026" aria-pressed="false">2026</button>
             <button class="filter-button" type="button" data-year="2025" aria-pressed="false">2025</button>
@@ -92,7 +93,7 @@
       <span>© Interrobang</span>
       <a href="./index.html">Home</a>
     </footer>
-    <script src="./menu.js?v=20260504-mobile-nav"></script>
+    <script src="./menu.js?v=20260504-sheet-featured-v2"></script>
   <script>
       const active = { tag: "all", year: "all" };
       const rows = Array.from(document.querySelectorAll(".project-row"));
