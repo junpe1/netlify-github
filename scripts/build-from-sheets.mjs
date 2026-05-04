@@ -143,6 +143,32 @@ function footer() {
     </footer>`;
 }
 
+function contactSection() {
+  return `<section class="contact contact-form-section" aria-labelledby="contact-title">
+        <p class="kicker">CONTACT</p>
+        <form class="contact-form" name="contact" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="contact">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name">
+          </label>
+          <label>
+            <span>Mail</span>
+            <input type="email" name="email" autocomplete="email">
+          </label>
+          <label>
+            <span>Subject</span>
+            <input type="text" name="subject">
+          </label>
+          <label class="message-field">
+            <span>Message</span>
+            <textarea name="message" rows="5"></textarea>
+          </label>
+          <button type="submit">Send</button>
+        </form>
+      </section>`;
+}
+
 function shell({ title, description, active, body }) {
   return `<!doctype html>
 <html lang="ja">
@@ -167,24 +193,31 @@ ${body}
 `;
 }
 
-function projectRow(work) {
-  return `<a class="project-row" href="./work-${escapeHtml(work.slug)}.html" data-tags="${escapeHtml(
+function projectRow(work, { image = false } = {}) {
+  const imageMarkup = image
+    ? `<span class="project-thumb"><img src="${escapeHtml(work.image_url)}" alt=""></span>`
+    : "";
+  const imageClass = image ? " project-row-with-image" : "";
+  return `<a class="project-row${imageClass}" href="./work-${escapeHtml(work.slug)}.html" data-tags="${escapeHtml(
     work.categories.map((category) => category.id).join(" "),
   )}" data-year="${escapeHtml(work.year)}">
+            ${imageMarkup}
             <span class="project-name">${escapeHtml(work.title_display)}</span>
-            <span class="project-meta">${escapeHtml(work.meta)}</span>
+            <span class="project-meta">${escapeHtml(work.year)}</span>
           </a>`;
 }
 
 function indexPage(works) {
-  const selectedRows = works.slice(0, 3).map(projectRow).join("\n          ");
+  const selectedRows = works
+    .slice(0, 3)
+    .map((work) => projectRow(work, { image: true }))
+    .join("\n          ");
   return shell({
     title: "森純平とインテロバング",
     description: "森純平とインテロバングの活動、プロジェクト、制作姿勢を紹介するサイト。",
     active: "",
     body: `      <section class="home" aria-labelledby="home-title">
-        <p class="page-label">ABOUT</p>
-        <h1 id="home-title">Architect /</h1>
+        <h1 class="visually-hidden" id="home-title">Jumpei Mori</h1>
         <div class="home-copy">
           <p>Jumpei Mori is an architect and Project Associate Professor at Tokyo University of the Arts, where he also serves as Director of The Way Of.</p>
           <p>His work centers on connecting art, society, and the city by designing new social ecosystems and connections. He is a founding director of PARADISE AIR and leads key cultural platforms such as VIVA and YAU.</p>
@@ -210,10 +243,7 @@ function indexPage(works) {
         </div>
       </section>
 
-      <section class="home-inquiries" aria-labelledby="home-inquiries-title">
-        <p class="page-label" id="home-inquiries-title">CONTACT</p>
-        <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a>
-      </section>`,
+      ${contactSection()}`,
   });
 }
 
@@ -275,7 +305,8 @@ function worksPage(works) {
           const tags = row.dataset.tags.split(" ");
           const tagMatch = active.tag === "all" || tags.includes(active.tag);
           const yearMatch = active.year === "all" || row.dataset.year === active.year;
-          row.hidden = !(tagMatch && yearMatch);
+          const dimmed = !(tagMatch && yearMatch);
+          row.classList.toggle("is-dimmed", dimmed);
         });
       }
 
