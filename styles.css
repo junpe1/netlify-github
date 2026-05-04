@@ -658,6 +658,40 @@ main {
     font-size: 16px;
     line-height: 1.1;
   }
+
+  .page-label {
+    overflow-wrap: anywhere;
+  }
+
+  .work-detail {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-top: 34px;
+    padding-bottom: 44px;
+  }
+
+  .work-meta,
+  .work-body {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .work-meta {
+    overflow-wrap: anywhere;
+  }
+
+  .work-body p {
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  .work-image {
+    margin: 28px 0 18px;
+  }
+
+  .work-image img {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 @media (max-width: 620px) {
