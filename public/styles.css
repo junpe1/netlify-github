@@ -438,6 +438,27 @@ main {
   line-height: 1.85;
 }
 
+.bio-section {
+  max-width: 860px;
+}
+
+.bio-section + .bio-section {
+  margin-top: clamp(38px, 7vw, 86px);
+}
+
+.bio-section p {
+  max-width: 760px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.bio-title,
+.bio-role {
+  color: var(--blue);
+  font-weight: 600;
+}
+
 .services {
   display: grid;
   margin: clamp(34px, 5vw, 64px) 0 0;
