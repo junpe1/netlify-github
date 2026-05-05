@@ -7,7 +7,48 @@ const LOCAL_CSV = path.join(ROOT, "works-spreadsheet-template.csv");
 const LOCAL_ABOUT_CSV = path.join(ROOT, "about-content-template.csv");
 const SHEET_CSV_URL = process.env.SHEET_CSV_URL;
 const ABOUT_CSV_URL = process.env.ABOUT_CSV_URL;
-const ASSET_VERSION = "20260505-home-images-about-clean-v1";
+const ASSET_VERSION = "20260505-sheet-labels-v1";
+
+const HEADER_ALIASES = new Map(
+  Object.entries({
+    "ページid": "slug",
+    "ページID": "slug",
+    "id": "slug",
+    "url名": "slug",
+    "タイトル": "title",
+    "日本語タイトル": "title",
+    "英語タイトル": "title_en",
+    "英タイトル": "title_en",
+    "年": "year",
+    "年度": "year",
+    "タグ": "categories",
+    "カテゴリー": "categories",
+    "category": "categories",
+    "tag": "categories",
+    "tags": "categories",
+    "表示情報": "meta",
+    "補足": "meta",
+    "説明": "summary",
+    "本文": "summary",
+    "概要": "summary",
+    "description": "summary",
+    "画像url": "image_url",
+    "画像URL": "image_url",
+    "画像": "image_url",
+    "画像説明": "image_alt",
+    "画像alt": "image_alt",
+    "alt": "image_alt",
+    "表示順": "sort_order",
+    "並び順": "sort_order",
+    "top表示": "featured",
+    "TOP表示": "featured",
+    "トップ表示": "featured",
+    "関連リンク": "related_links",
+    "リンク": "related_links",
+    "url": "related_links",
+    "URL": "related_links",
+  }),
+);
 
 function escapeHtml(value = "") {
   return String(value)
@@ -99,20 +140,120 @@ function parseCsv(text) {
   return rows.filter((item) => item.some((cell) => cell.trim()));
 }
 
+function normalizeCsvUrl(value = "") {
+  const rawUrl = String(value).trim();
+  if (!rawUrl) {
+    return rawUrl;
+  }
+
+  const sheetMatch = rawUrl.match(/docs\.google\.com\/spreadsheets\/d\/([^/]+)/);
+  if (!sheetMatch) {
+    return rawUrl;
+  }
+
+  if (rawUrl.includes("output=csv") || rawUrl.includes("format=csv")) {
+    return rawUrl;
+  }
+
+  const gidMatch = rawUrl.match(/[?#&]gid=([0-9]+)/);
+  const gid = gidMatch ? gidMatch[1] : "0";
+  return `https://docs.google.com/spreadsheets/d/${sheetMatch[1]}/export?format=csv&gid=${gid}`;
+}
+
+async function fetchCsv(url, label) {
+  const csvUrl = normalizeCsvUrl(url);
+  const response = await fetch(csvUrl);
+  if (!response.ok) {
+    throw new Error(`Could not fetch ${label} CSV: ${response.status}`);
+  }
+  const text = await response.text();
+  if (/^\s*</.test(text)) {
+    throw new Error(
+      `${label} URL returned HTML instead of CSV. Publish the sheet as CSV, or use a Google Sheets URL that includes the correct gid.`,
+    );
+  }
+  return text;
+}
+
+function normalizeHeaderName(header, index) {
+  const raw = header.trim();
+  if (!raw) {
+    return `column_${index + 1}`;
+  }
+  const compact = raw.toLowerCase().replace(/[＿\s-]+/g, "_");
+  const noSpace = raw.replace(/\s+/g, "");
+  return HEADER_ALIASES.get(raw) ?? HEADER_ALIASES.get(noSpace) ?? HEADER_ALIASES.get(compact) ?? compact;
+}
+
+function normalizeHeaders(headers) {
+  const counts = new Map();
+  const baseKeys = headers.map(normalizeHeaderName);
+  const hasSummary = baseKeys.includes("summary");
+
+  return baseKeys.map((key) => {
+    const count = (counts.get(key) ?? 0) + 1;
+    counts.set(key, count);
+
+    if (key === "meta" && count === 2 && !hasSummary) {
+      return "summary";
+    }
+    return count === 1 ? key : `${key}_${count}`;
+  });
+}
+
+function parseRelatedLinks(value = "") {
+  return String(value)
+    .split(/\n|,/)
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => {
+      const [maybeLabel, maybeUrl] = entry.includes("|")
+        ? entry.split("|").map((part) => part.trim())
+        : [entry, entry];
+      const url = maybeUrl || maybeLabel;
+      const label = maybeUrl ? maybeLabel : url.replace(/^https?:\/\//, "");
+      return { label, url };
+    })
+    .filter((link) => /^https?:\/\//.test(link.url));
+}
+
+function splitSummaryAndLinks(summary = "", relatedLinks = []) {
+  if (relatedLinks.length) {
+    return { summary, relatedLinks };
+  }
+
+  const urlPattern = /https?:\/\/[^\s)）]+/g;
+  const urls = summary.match(urlPattern) ?? [];
+  if (!urls.length) {
+    return { summary, relatedLinks };
+  }
+
+  return {
+    summary: summary
+      .replace(urlPattern, "")
+      .replace(/[ \t]+\n/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim(),
+    relatedLinks: parseRelatedLinks(urls.join("\n")),
+  };
+}
+
 async function loadWorks() {
   const csv = SHEET_CSV_URL
-    ? await fetch(SHEET_CSV_URL).then((response) => {
-        if (!response.ok) {
-          throw new Error(`Could not fetch Google Sheets CSV: ${response.status}`);
-        }
-        return response.text();
-      })
+    ? await fetchCsv(SHEET_CSV_URL, "Google Sheets works")
     : await fs.readFile(LOCAL_CSV, "utf8");
 
-  const [headers, ...rows] = parseCsv(csv);
+  const [rawHeaders, ...rows] = parseCsv(csv);
+  const headers = normalizeHeaders(rawHeaders);
   const works = rows
     .map((row, rowIndex) => {
       const item = Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ""]));
+      item.summary = item.summary || item.description || item.body || item.meta_2 || "";
+      const { summary, relatedLinks } = splitSummaryAndLinks(
+        item.summary,
+        parseRelatedLinks(item.related_links),
+      );
+      item.summary = summary;
       const categories = item.categories
         .split(",")
         .map((category) => category.trim())
@@ -123,6 +264,7 @@ async function loadWorks() {
         sort_order: parseSortOrder(item.sort_order),
         featured: parseFeatured(item.featured),
         title_display: item.title || item.title_en,
+        related_links: relatedLinks,
         categories: categories.map((category) => ({
           id: slugify(category),
           label: titleCase(category),
@@ -140,17 +282,29 @@ async function loadWorks() {
   });
 }
 
+function relatedLinksMarkup(work) {
+  if (!work.related_links.length) {
+    return "";
+  }
+  const links = work.related_links
+    .map(
+      (link) =>
+        `<li><a class="text-link" href="${escapeHtml(link.url)}" target="_blank" rel="noopener">${escapeHtml(link.label)}</a></li>`,
+    )
+    .join("");
+  return `<div class="related-links">
+            <p class="kicker">Related Links</p>
+            <ul>${links}</ul>
+          </div>`;
+}
+
 async function loadAbout() {
   const csv = ABOUT_CSV_URL
-    ? await fetch(ABOUT_CSV_URL).then((response) => {
-        if (!response.ok) {
-          throw new Error(`Could not fetch About CSV: ${response.status}`);
-        }
-        return response.text();
-      })
+    ? await fetchCsv(ABOUT_CSV_URL, "Google Sheets about")
     : await fs.readFile(LOCAL_ABOUT_CSV, "utf8");
 
-  const [headers, ...rows] = parseCsv(csv);
+  const [rawHeaders, ...rows] = parseCsv(csv);
+  const headers = normalizeHeaders(rawHeaders);
   return Object.fromEntries(
     rows.map((row) => {
       const item = Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ""]));
@@ -500,6 +654,7 @@ function workPage(work) {
           <figure class="work-image">
             <img src="${escapeHtml(work.image_url)}" alt="${escapeHtml(work.image_alt)}">
           </figure>
+          ${relatedLinksMarkup(work)}
           <a class="text-link" href="./works.html">Back to Projects</a>
         </div>
       </article>`,

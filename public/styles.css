@@ -470,8 +470,8 @@ main {
 }
 
 .compact-head {
-  padding-top: 34px;
-  padding-bottom: 34px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 .compact-head h1 {
@@ -616,8 +616,8 @@ main {
 
 .interrobang-page .text-block {
   display: block;
-  padding-top: clamp(22px, 3.6vw, 40px);
-  padding-bottom: clamp(22px, 3.6vw, 40px);
+  padding-top: clamp(20px, 3vw, 34px);
+  padding-bottom: clamp(20px, 3vw, 34px);
 }
 
 .interrobang-page .text-block > p:not(.kicker),
@@ -629,13 +629,29 @@ main {
 }
 
 .interrobang-page .kicker {
-  margin: 0 0 18px;
-  padding-bottom: 12px;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--blue);
 }
 
 .interrobang-page .text-block > p:not(.kicker) {
   margin-bottom: 12px;
+}
+
+.related-links {
+  margin: 20px 0 18px;
+}
+
+.related-links .kicker {
+  margin-bottom: 8px;
+}
+
+.related-links ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .services {
@@ -903,6 +919,11 @@ main {
     padding-bottom: 32px;
   }
 
+  .compact-head {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
   .work-detail {
     grid-template-columns: 1fr;
     gap: 18px;
@@ -1016,6 +1037,15 @@ main {
   .company-list,
   .member-list {
     grid-column: 1;
+  }
+
+  .interrobang-page .text-block {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .interrobang-page .kicker {
+    margin-bottom: 14px;
   }
 
   .feature-wide {
