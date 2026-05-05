@@ -1,3 +1,24 @@
+document.body.classList.add("is-loading");
+
+const siteLoader = document.querySelector(".site-loader");
+
+function hideLoader() {
+  document.body.classList.remove("is-loading");
+  if (!siteLoader) {
+    return;
+  }
+  siteLoader.classList.add("is-hidden");
+  window.setTimeout(() => {
+    siteLoader.remove();
+  }, 420);
+}
+
+window.addEventListener("load", () => {
+  window.setTimeout(hideLoader, 720);
+});
+
+window.setTimeout(hideLoader, 1800);
+
 const menuToggle = document.querySelector(".menu-toggle");
 const siteNav = document.querySelector("#site-nav");
 

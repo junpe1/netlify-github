@@ -9,7 +9,7 @@
 3. Google Sheetsで「ファイル」から「共有」または「ウェブに公開」を選び、CSVとして公開します。
 4. 公開CSVのURLをNetlifyの環境変数 `SHEET_CSV_URL` に入れます。
 
-現在の作品シートを使う場合は、Netlifyの `SHEET_CSV_URL` に次を入れます。
+現在の作品シートは、何も設定しなくても標準で次のCSVを読みに行く設定にしています。Netlifyの `SHEET_CSV_URL` に同じURLを入れておくと、管理画面でも確認しやすいです。
 
 ```txt
 https://docs.google.com/spreadsheets/d/1QxVhkYq3JwMbO4keaEf5hJIkd3jme-QPvGga1NJgbas/export?format=csv&gid=0
@@ -17,7 +17,7 @@ https://docs.google.com/spreadsheets/d/1QxVhkYq3JwMbO4keaEf5hJIkd3jme-QPvGga1NJg
 
 編集用URLを入れてもビルド時にCSV用URLへ変換しますが、Netlifyには上のCSV URLを入れておくと確認しやすいです。
 
-`SHEET_CSV_URL` が未設定のときは、手元の `works-spreadsheet-template.csv` から生成されます。
+手元の作業でGoogle Sheetsを読めない場合だけ、下書き用の `works-spreadsheet-template.csv` から生成されます。
 
 `タグ` 列に入れた値がPROJECTSページのカテゴリーフィルターになります。複数カテゴリは `Architecture,Urbanism` のようにカンマで区切ります。
 

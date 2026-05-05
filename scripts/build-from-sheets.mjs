@@ -5,9 +5,13 @@ const ROOT = process.cwd();
 const PUBLIC_DIR = path.join(ROOT, "public");
 const LOCAL_CSV = path.join(ROOT, "works-spreadsheet-template.csv");
 const LOCAL_ABOUT_CSV = path.join(ROOT, "about-content-template.csv");
-const SHEET_CSV_URL = process.env.SHEET_CSV_URL;
+const DEFAULT_SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/1QxVhkYq3JwMbO4keaEf5hJIkd3jme-QPvGga1NJgbas/export?format=csv&gid=0";
+const HAS_EXPLICIT_SHEET_CSV_URL = Boolean(process.env.SHEET_CSV_URL);
+const SHEET_CSV_URL = process.env.SHEET_CSV_URL || DEFAULT_SHEET_CSV_URL;
 const ABOUT_CSV_URL = process.env.ABOUT_CSV_URL;
-const ASSET_VERSION = "20260505-sheet-labels-v1";
+const ASSET_VERSION = "20260505-loader-sheet-v1";
+let worksSource = SHEET_CSV_URL ? "Google Sheets" : "local CSV";
 
 const HEADER_ALIASES = new Map(
   Object.entries({
@@ -239,9 +243,23 @@ function splitSummaryAndLinks(summary = "", relatedLinks = []) {
 }
 
 async function loadWorks() {
-  const csv = SHEET_CSV_URL
-    ? await fetchCsv(SHEET_CSV_URL, "Google Sheets works")
-    : await fs.readFile(LOCAL_CSV, "utf8");
+  let csv;
+  if (SHEET_CSV_URL) {
+    try {
+      csv = await fetchCsv(SHEET_CSV_URL, "Google Sheets works");
+    } catch (error) {
+      if (HAS_EXPLICIT_SHEET_CSV_URL || process.env.NETLIFY) {
+        throw error;
+      }
+      console.warn(
+        `Could not fetch default Google Sheets CSV. Falling back to ${path.basename(LOCAL_CSV)} for local build.`,
+      );
+      worksSource = "local CSV";
+      csv = await fs.readFile(LOCAL_CSV, "utf8");
+    }
+  } else {
+    csv = await fs.readFile(LOCAL_CSV, "utf8");
+  }
 
   const [rawHeaders, ...rows] = parseCsv(csv);
   const headers = normalizeHeaders(rawHeaders);
@@ -258,8 +276,10 @@ async function loadWorks() {
         .split(",")
         .map((category) => category.trim())
         .filter(Boolean);
+      const slug = slugify(item.slug || item.title_en || item.title);
       return {
         ...item,
+        slug,
         source_index: rowIndex,
         sort_order: parseSortOrder(item.sort_order),
         featured: parseFeatured(item.featured),
@@ -378,6 +398,17 @@ function contactSection() {
       </section>`;
 }
 
+function loader() {
+  return `<div class="site-loader" aria-hidden="true">
+      <svg class="loader-mark" viewBox="0 0 240 170" role="img">
+        <path d="M45 111 C24 92 26 55 52 40 C83 22 118 42 111 72 C105 97 74 87 78 65 C82 43 124 30 158 43 C195 58 204 91 182 116 C157 145 106 137 99 111 C94 92 118 76 141 89" />
+        <path d="M143 42 C151 20 185 23 195 50 C205 78 183 100 154 97" />
+        <path d="M172 133 C180 126 194 131 196 143 C198 157 179 164 171 153 C166 146 166 138 172 133" />
+        <path d="M122 27 C130 15 148 18 151 30 C154 42 136 47 127 39" />
+      </svg>
+    </div>`;
+}
+
 function shell({ title, description, active, body }) {
   const bodyClass = active === "interrobang" ? ' class="interrobang-theme"' : "";
   return `<!doctype html>
@@ -390,6 +421,7 @@ function shell({ title, description, active, body }) {
     <link rel="stylesheet" href="./styles.css?v=${ASSET_VERSION}">
   </head>
   <body${bodyClass}>
+    ${loader()}
     ${nav(active)}
 
     <main>
@@ -686,4 +718,4 @@ for (const work of works) {
   await writeFile(`work-${work.slug}.html`, workPage(work));
 }
 
-console.log(`Generated ${works.length} projects from ${SHEET_CSV_URL ? "Google Sheets" : "local CSV"}.`);
+console.log(`Generated ${works.length} projects from ${worksSource}.`);
